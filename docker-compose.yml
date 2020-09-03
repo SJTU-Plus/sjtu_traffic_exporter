@@ -1,0 +1,21 @@
+version: "3"
+services:
+  exporter:
+    build: ./exporter
+    ports:
+      - "9142:80"
+    restart: always
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus-data:/etc/prometheus"
+    ports:
+      - "9090:9090"
+    restart: always
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - "./grafana-data:/var/lib/grafana"
+    ports:
+      - "3000:3000"
+    restart: always
