@@ -36,10 +36,11 @@ def update_canteen_metrics():
                 canteen_capacity_metric.labels(canteen.parent.name, canteen.name).set(canteen.overall)
                 canteen_utilizaion_metric.labels(canteen.parent.name, canteen.name).set(
                     (canteen.occupied / canteen.overall) if canteen.overall != 0 else 0)
-            canteen_occupied_metric.labels(canteen.name, "").set(canteen.occupied)
-            canteen_capacity_metric.labels(canteen.name, "").set(canteen.overall)
-            canteen_utilizaion_metric.labels(canteen.name, "").set(
-                (canteen.occupied / canteen.overall) if canteen.overall != 0 else 0)
+            else:
+                canteen_occupied_metric.labels(canteen.name, "").set(canteen.occupied)
+                canteen_capacity_metric.labels(canteen.name, "").set(canteen.overall)
+                canteen_utilizaion_metric.labels(canteen.name, "").set(
+                    (canteen.occupied / canteen.overall) if canteen.overall != 0 else 0)
 
 
 @scheduler.scheduled_job("interval", seconds=30)
