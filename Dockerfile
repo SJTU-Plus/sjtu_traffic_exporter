@@ -12,4 +12,5 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-CMD ["uwsgi", "--http", "0.0.0.0:9142", "--manage-script-name", "--mount", "/=sjtu_traffic_exporter:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:9142", "sjtu_traffic_exporter:app"]
+

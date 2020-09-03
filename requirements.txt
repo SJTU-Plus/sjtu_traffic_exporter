@@ -2,4 +2,4 @@ prometheus_client
 requests
 flask
 apscheduler
-uwsgi
+gunicorn
