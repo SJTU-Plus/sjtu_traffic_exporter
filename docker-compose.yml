@@ -3,7 +3,7 @@ services:
   exporter:
     build: ./exporter
     ports:
-      - "9142:80"
+      - "9142:9142"
     restart: always
   prometheus:
     image: prom/prometheus

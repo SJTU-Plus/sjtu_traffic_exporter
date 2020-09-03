@@ -29,4 +29,4 @@ scrape_configs:
     - targets: ['localhost:9090']
   - job_name: 'sjtu_traffic'
     static_configs:
-      - targets: ['exporter:80']
+      - targets: ['exporter:9142']
