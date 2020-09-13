@@ -1,4 +1,4 @@
-FROM python
+FROM python:slim
 
 MAINTAINER LightQuantum
 
