@@ -24,7 +24,7 @@ class CanteenTraffic:
         def fetch_sub_canteens(parent: Canteen) -> List[SubCanteen]:
             sub_places = self.session.get(f"http://{PLUS_HOST}/api/sjtu/canteen/{parent.id}").json()
             return [process_sub_places(parent, place) for place in sub_places]
-        places = self.session.get("http://{PLUS_HOST}/api/sjtu/canteen").json()
+        places = self.session.get(f"http://{PLUS_HOST}/api/sjtu/canteen").json()
         main_canteens = [process_main_places(place) for place in places]
         sub_canteens = reduce(lambda x, y: (x if x else []) + y, map(fetch_sub_canteens, main_canteens))
         return main_canteens + sub_canteens
@@ -41,7 +41,7 @@ class LibraryTraffic:
         def process_place(place: dict) -> Library:
             return Library(place["areaName"], place["inCounter"], place["max"])
 
-        raw_places = self.session.get("http://{PLUS_HOST}/api/sjtu/library").json()
+        raw_places = self.session.get(f"http://{PLUS_HOST}/api/sjtu/library").json()
         places = raw_places["numbers"]
         return [process_place(place) for place in places]
 
