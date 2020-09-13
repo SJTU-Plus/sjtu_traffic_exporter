@@ -1,4 +1,6 @@
 import json
+import os
+
 from functools import reduce
 from typing import List
 
@@ -6,6 +8,7 @@ from requests import Session
 
 from sjtu_traffic_exporter.models import Canteen, Library, SubCanteen
 
+PLUS_HOST = os.environ.get("PLUS_HOST", "sjtu-plus.internal")
 
 class CanteenTraffic:
     def __init__(self):
@@ -19,9 +22,9 @@ class CanteenTraffic:
             return SubCanteen(int(place["Id"]), place["Name"], place["Seat_u"], place["Seat_s"], parent)
 
         def fetch_sub_canteens(parent: Canteen) -> List[SubCanteen]:
-            sub_places = self.session.get(f"http://sjtu-plus.internal/api/sjtu/canteen/{parent.id}").json()
+            sub_places = self.session.get(f"http://{PLUS_HOST}/api/sjtu/canteen/{parent.id}").json()
             return [process_sub_places(parent, place) for place in sub_places]
-        places = self.session.get("http://sjtu-plus.internal/api/sjtu/canteen").json()
+        places = self.session.get("http://{PLUS_HOST}/api/sjtu/canteen").json()
         main_canteens = [process_main_places(place) for place in places]
         sub_canteens = reduce(lambda x, y: (x if x else []) + y, map(fetch_sub_canteens, main_canteens))
         return main_canteens + sub_canteens
@@ -38,7 +41,7 @@ class LibraryTraffic:
         def process_place(place: dict) -> Library:
             return Library(place["areaName"], place["inCounter"], place["max"])
 
-        raw_places = self.session.get("http://sjtu-plus.internal/api/sjtu/library").json()
+        raw_places = self.session.get("http://{PLUS_HOST}/api/sjtu/library").json()
         places = raw_places["numbers"]
         return [process_place(place) for place in places]
 
